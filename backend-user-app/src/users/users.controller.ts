@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PaginationQuery } from './dto/pagination.dto';
@@ -52,10 +53,10 @@ export class UsersController {
   }
 
   @Post('update')
-  async updateUser(@Body() user: UpdateUserDto): Promise<IUser> {
+  async updateUser(@Res() res, @Body() user: UpdateUserDto): Promise<IUser> {
     try {
       const result = await this.usersService.updateUser(user);
-      return result;
+      return res.status(200).json(result);
     } catch (error) {
       console.error('Error while updating user:', error);
       throw new Error('Error while updating user');

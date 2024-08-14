@@ -3,12 +3,12 @@ POST http://localhost:3000/users/update HTTP/1.1
 content-type: application/json
 
 {
-      "id": 187,
-      "name": "test-11",
-      "surname": "test-12",
-      "email": "test-12@localhost.com",
+      "id": 21,
+      "name": "test2",
+      "surname": "test3",
+      "email": "test8@localhost.com",
       "password": "P@ssw0rd",
-      "phone": "123-456-7810",
+      "phone": "123-456-7890",
       "age": 42,
       "country": "USA",
       "district": "PA"
