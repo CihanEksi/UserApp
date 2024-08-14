@@ -1,14 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './interfaces/user.interface';
+import { PaginationQuery } from './dto/pagination.dto';
+import { GetUsersResponse } from './interfaces/responses/usersResponse.interface';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  
   @Get()
-  async getUsers(): Promise<User[]> {
-    return this.usersService.getUsers();
+  async getUsers(@Query() query: PaginationQuery): Promise<GetUsersResponse> {
+    return this.usersService.getUsers({
+      query,
+    });
   }
-  
 }
