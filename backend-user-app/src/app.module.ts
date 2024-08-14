@@ -20,7 +20,7 @@ export class AppModule implements OnModuleInit {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async onModuleInit() {
-    await this.databaseService.createDatabaseIfNotExists();
+    // await this.databaseService.createDatabaseIfNotExists();
     await this.databaseService.createTablesIfNotExists();
     await this.databaseService.insertDummyData();
   }

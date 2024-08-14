@@ -1,0 +1,14 @@
+
+POST http://localhost:3000/users/save HTTP/1.1
+content-type: application/json
+
+{
+      "name": "test",
+      "surname": "test8",
+      "email": "test8@localhost.com",
+      "password": "P@ssw0rd",
+      "phone": "123-456-7890",
+      "age": 42,
+      "country": "USA",
+      "district": "PA"
+}

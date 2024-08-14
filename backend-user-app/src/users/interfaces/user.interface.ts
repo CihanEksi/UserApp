@@ -8,7 +8,7 @@ export interface IUser {
   age: number;
   country: string;
   district: string;
-  role: string;
+  role: 'admin' | 'user';
   created_at: Date;
   updated_at: Date;
 }
@@ -23,7 +23,7 @@ export const publicUserColumns = Object.freeze([
   'age',
   'country',
   'district',
-  //   'role',
+  'role',
   'created_at',
   'updated_at',
 ]);

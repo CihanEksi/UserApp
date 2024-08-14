@@ -5,3 +5,7 @@ export interface GetUsersResponse {
   data: IUser[];
   pagination: IGeneralPaginationResponse;
 }
+
+export interface GetUserByIdResponse {
+  data: IUser | null;
+}

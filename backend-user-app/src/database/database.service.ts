@@ -99,7 +99,7 @@ export class DatabaseService {
   }
 
   async query(sql: string, values?: any[]) {
-    const connection = await this.connection;
+    const connection = this.connection;
     const [rows] = await connection.execute(sql, values);
     return rows;
   }

@@ -1,2 +1,2 @@
 
-GET http://localhost:3000/users?page=1&pageSize=3&search=ma123123
+GET http://localhost:3000/users?page=1&pageSize=10

@@ -4,6 +4,10 @@ import { DatabaseService } from 'src/database/database.service';
 import { PaginationQuery } from './dto/pagination.dto';
 import { GetUsersResponse } from './interfaces/responses/usersResponse.interface';
 import { TABLES } from 'src/database/database.enums';
+import { CreateUserDto } from './dto/user.dto';
+import { hashUnRecoveable } from 'src/utils/encryption';
+import { USER_ROLE } from './enums/user.enum';
+import { IInsertInterface } from 'src/database/interfaces/database.interface';
 interface GetUsersParams {
   query: PaginationQuery;
 }
@@ -60,5 +64,38 @@ export class UsersService {
       data: queryResult as IUser[],
       pagination: paginationInformation,
     };
+  }
+
+  async getUserById(id: number): Promise<IUser> {
+    const query = `SELECT ${publicUserColumns.join(', ')} from ${TABLES.users} WHERE id = ?`;
+    const queryResult = await this.mysql2.query(query, [id]);
+    return queryResult?.[0] as IUser;
+  }
+
+  async saveUser(user: CreateUserDto): Promise<IUser> {
+    const userData = {
+      ...user,
+      password: await hashUnRecoveable(user.password),
+      role: USER_ROLE.user,
+    };
+
+    const keys = Object.keys(userData);
+    const values = Object.values(userData);
+
+    const query = `INSERT INTO ${TABLES.users} (${keys.join(', ')}) VALUES (${keys.map(() => '?').join(', ')})`;
+    const queryResult = (await this.mysql2.query(
+      query,
+      values,
+    )) as IInsertInterface;
+
+    const createdDataId = queryResult?.insertId;
+
+    if (!createdDataId) {
+      throw new Error('Error while creating user');
+    }
+
+    const getUser = await this.getUserById(createdDataId);
+
+    return getUser as IUser;
   }
 }
