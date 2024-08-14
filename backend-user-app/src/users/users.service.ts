@@ -4,10 +4,10 @@ import { DatabaseService } from 'src/database/database.service';
 import { PaginationQuery } from './dto/pagination.dto';
 import { GetUsersResponse } from './interfaces/responses/usersResponse.interface';
 import { TABLES } from 'src/database/database.enums';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { hashUnRecoveable } from 'src/utils/encryption';
 import { USER_ROLE } from './enums/user.enum';
-import { IInsertInterface } from 'src/database/interfaces/database.interface';
+import { IUpsertInterface } from 'src/database/interfaces/database.interface';
 interface GetUsersParams {
   query: PaginationQuery;
 }
@@ -86,7 +86,7 @@ export class UsersService {
     const queryResult = (await this.mysql2.query(
       query,
       values,
-    )) as IInsertInterface;
+    )) as IUpsertInterface;
 
     const createdDataId = queryResult?.insertId;
 
@@ -95,6 +95,32 @@ export class UsersService {
     }
 
     const getUser = await this.getUserById(createdDataId);
+
+    return getUser as IUser;
+  }
+
+  async updateUser(userDto: UpdateUserDto): Promise<any> {
+    const updateData = { ...userDto };
+
+    if (updateData.password) {
+      updateData.password = await hashUnRecoveable(updateData.password);
+    }
+
+    const keys = Object.keys(updateData);
+    const values = Object.values(updateData);
+
+    const query = `UPDATE ${TABLES.users} SET ${keys.map((key) => `${key} = ?`).join(', ')} WHERE id = ?`;
+
+    const queryResult = (await this.mysql2.query(query, [
+      ...values,
+      updateData.id,
+    ])) as IUpsertInterface;
+
+    if (!queryResult?.affectedRows) {
+      throw new Error('Error while updating user');
+    }
+
+    const getUser = await this.getUserById(updateData.id);
 
     return getUser as IUser;
   }

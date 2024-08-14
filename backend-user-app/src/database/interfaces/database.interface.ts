@@ -1,4 +1,4 @@
-export interface IInsertInterface {
+export interface IUpsertInterface {
   fieldCount: number;
   affectedRows: number;
   insertId: number;

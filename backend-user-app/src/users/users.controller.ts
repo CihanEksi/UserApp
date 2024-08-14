@@ -11,7 +11,7 @@ import { UsersService } from './users.service';
 import { PaginationQuery } from './dto/pagination.dto';
 import { GetUsersResponse } from './interfaces/responses/usersResponse.interface';
 import { IUser } from './interfaces/user.interface';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -48,6 +48,17 @@ export class UsersController {
     } catch (error) {
       console.error('Error while saving user:', error);
       throw new Error('Error while saving user');
+    }
+  }
+
+  @Post('update')
+  async updateUser(@Body() user: UpdateUserDto): Promise<IUser> {
+    try {
+      const result = await this.usersService.updateUser(user);
+      return result;
+    } catch (error) {
+      console.error('Error while updating user:', error);
+      throw new Error('Error while updating user');
     }
   }
 }

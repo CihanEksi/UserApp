@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNumber } from 'class-validator';
+import { IsString, IsEmail, IsNumber, IsOptional } from 'class-validator';
 export interface IUser {
   id: number;
   name: string;
@@ -25,6 +25,36 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
+  password: string;
+
+  @IsString()
+  phone: string;
+
+  @IsNumber()
+  age: number;
+
+  @IsString()
+  country: string;
+
+  @IsString()
+  district: string;
+}
+
+export class UpdateUserDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  surname: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @IsOptional()
   password: string;
 
   @IsString()
