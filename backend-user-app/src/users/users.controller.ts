@@ -13,6 +13,7 @@ import { PaginationQuery } from './dto/pagination.dto';
 import { GetUsersResponse } from './interfaces/responses/usersResponse.interface';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { Response } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -42,13 +43,18 @@ export class UsersController {
   }
 
   @Post('save')
-  async saveUser(@Body() user: CreateUserDto): Promise<IUser> {
+  async saveUser(
+    @Body() user: CreateUserDto,
+    @Res({ passthrough: false }) response: Response,
+  ): Promise<IUser> {
     try {
       const result = await this.usersService.saveUser(user);
+      response.status(200).json(result);
       return result;
     } catch (error) {
-      console.error('Error while saving user:', error);
-      throw new Error('Error while saving user');
+      const message = error.message || 'Error while saving user';
+      console.error('Error while saving user:', message);
+      response.status(500).json({ message: message, statusCode: 500 });
     }
   }
 

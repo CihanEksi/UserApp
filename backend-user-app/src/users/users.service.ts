@@ -28,10 +28,11 @@ export class UsersService {
     let whereQuery = '';
 
     if (search) {
-      whereQuery += ` WHERE name LIKE ? OR surname LIKE ? OR email LIKE ?`;
+      whereQuery += ` WHERE name LIKE ? OR surname LIKE ?`;
       query += whereQuery;
-      queryValues.push(`%${search}%`, `%${search}%`, `%${search}%`);
+      queryValues.push(`%${search}%`, `%${search}%`);
     }
+    query += ` ORDER BY id DESC `;
 
     query += ` LIMIT ${pageSize} OFFSET ${skip}`;
     const queryResultPromise = this.mysql2.query(query, queryValues);
@@ -78,6 +79,16 @@ export class UsersService {
       password: await hashUnRecoveable(user.password),
       role: USER_ROLE.user,
     };
+
+    const checkAlreadyExistQuery = `SELECT id from ${TABLES.users} WHERE email = ?`;
+    const checkAlreadyExistResult = (await this.mysql2.query(
+      checkAlreadyExistQuery,
+      [userData.email],
+    )) as IUser[];
+
+    if (checkAlreadyExistResult?.length) {
+      throw new Error('User already exist');
+    }
 
     const keys = Object.keys(userData);
     const values = Object.values(userData);
