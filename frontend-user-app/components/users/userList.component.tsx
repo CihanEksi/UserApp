@@ -93,7 +93,6 @@ export default function Users() {
 
     useEffect(() => {
         fetchUsers(page, pageSize, searchKey);
-        console.log('fetching users useEffect');
     }, [page, pageSize, searchKey]);
 
     return (
