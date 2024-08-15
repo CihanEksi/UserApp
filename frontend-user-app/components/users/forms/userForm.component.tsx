@@ -118,8 +118,6 @@ const UserForm: React.FC<UserFormProps> = ({ form, visible, onClose, onSubmit, i
                         return null;
                     }
 
-
-
                     return <Form.Item
                         key={element.name}
                         label={capitalFirstLetter(element.name)}

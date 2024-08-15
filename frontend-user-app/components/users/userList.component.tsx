@@ -46,7 +46,7 @@ export default function Users() {
         setLoading(true);
         try {
             const createdUser = await saveUser(values);
-            setSearchKey(createdUser.name);
+            fetchUsers(page, pageSize, searchKey);
             message.success('User created successfully.');
         } catch (error: Error | any) {
             message.error(error.message || 'Failed to create user please try again.');
@@ -93,6 +93,7 @@ export default function Users() {
 
     useEffect(() => {
         fetchUsers(page, pageSize, searchKey);
+        console.log('fetching users useEffect');
     }, [page, pageSize, searchKey]);
 
     return (
