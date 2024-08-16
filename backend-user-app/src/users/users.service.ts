@@ -120,6 +120,15 @@ export class UsersService {
     const keys = Object.keys(updateData);
     const values = Object.values(updateData);
 
+    const checkQuery = `SELECT email from ${TABLES.users} WHERE email = ?`;
+    const checkResult = (await this.mysql2.query(checkQuery, [
+      updateData.email,
+    ])) as IUser[];
+
+    if (checkResult?.length) {
+      throw new Error('User email already exist and cannot be duplicated');
+    }
+
     const query = `UPDATE ${TABLES.users} SET ${keys.map((key) => `${key} = ?`).join(', ')} WHERE id = ?`;
 
     const queryResult = (await this.mysql2.query(query, [

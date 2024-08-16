@@ -3,10 +3,10 @@ POST http://localhost:3000/users/update HTTP/1.1
 content-type: application/json
 
 {
-      "id": 21,
+      "id": 11,
       "name": "test2",
       "surname": "test3",
-      "email": "test8@localhost.com",
+      "email": "test81223@localhost.com",
       "password": "P@ssw0rd",
       "phone": "123-456-7890",
       "age": 42,

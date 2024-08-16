@@ -59,13 +59,18 @@ export class UsersController {
   }
 
   @Post('update')
-  async updateUser(@Res() res, @Body() user: UpdateUserDto): Promise<IUser> {
+  async updateUser(
+    @Res({ passthrough: false }) res: Response,
+    @Body() user: UpdateUserDto,
+  ): Promise<IUser> {
     try {
       const result = await this.usersService.updateUser(user);
-      return res.status(200).json(result);
+      res.status(200).json(result);
+      return result;
     } catch (error) {
       console.error('Error while updating user:', error);
-      throw new Error('Error while updating user');
+      const message = error.message || 'Error while updating user';
+      res.status(500).json({ message: message, statusCode: 500 });
     }
   }
 }
