@@ -20,6 +20,7 @@ brew services stop mysql
 <ul>
   <li><code>page</code> (integer, optional): The page number to retrieve. Default is <code>1</code>.</li>
   <li><code>pageSize</code> (integer, optional): The number of users to retrieve per page. Default is <code>10</code>.</li>
+  <li><code>search</code></li>
 </ul>
 
 <h3>Response</h3>
